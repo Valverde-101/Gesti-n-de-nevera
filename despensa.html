@@ -19,29 +19,52 @@
     <button id="add-btn" class="add-button">+</button>
   </main>
 
-  <div id="add-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>Selecciona un alimento</h2>
-      <input type="text" id="icon-search" class="search-bar" placeholder="Buscar iconos...">
-      <select id="category-select"></select>
-      <div id="icon-grid"></div>
-      <form id="add-form" class="hidden">
-        <div class="selected">
-          <img id="selected-icon" alt="">
-          <span id="selected-name"></span>
+    <div id="add-modal" class="modal hidden">
+      <div class="modal-content">
+        <div id="selection-step">
+          <div id="category-section" class="category-section"></div>
+          <div id="items-section" class="items-section"></div>
         </div>
-        <input type="number" id="food-qty" min="1" value="1">
-        <select id="food-unit">
-          <option value="unidades">Unidades</option>
-          <option value="kg">Kilos</option>
-          <option value="l">Litros</option>
-        </select>
-        <input type="date" id="food-exp">
-        <button type="submit">Agregar</button>
-      </form>
-      <button id="close-modal" type="button">Cerrar</button>
+        <form id="add-form" class="hidden">
+          <button type="button" id="back-btn">Volver</button>
+          <div class="selected">
+            <img id="detail-icon" alt="">
+            <div>
+              <h3 id="detail-name"></h3>
+              <p id="detail-category"></p>
+            </div>
+          </div>
+          <label>Ubicación
+            <select id="detail-location">
+              <option value="Nevera">Nevera</option>
+              <option value="Congelador">Congelador</option>
+              <option value="Despensa">Despensa</option>
+            </select>
+          </label>
+          <label>Cantidad
+            <input type="number" id="detail-qty" min="1" value="1">
+          </label>
+          <label>Unidad
+            <select id="detail-unit">
+              <option value="unidades">Unidades</option>
+              <option value="kg">Kilos</option>
+              <option value="l">Litros</option>
+            </select>
+          </label>
+          <label>Fecha de registro
+            <input type="date" id="detail-reg" readonly>
+          </label>
+          <label>Fecha de caducidad
+            <input type="date" id="detail-exp">
+          </label>
+          <label>Nota
+            <textarea id="detail-note"></textarea>
+          </label>
+          <button type="submit">Agregar</button>
+        </form>
+        <button id="close-modal" type="button">Cerrar</button>
+      </div>
     </div>
-  </div>
 
   <div id="confirm-modal" class="modal hidden">
     <div class="modal-content">

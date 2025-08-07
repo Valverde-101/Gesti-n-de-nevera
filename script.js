@@ -5,7 +5,7 @@ let editingItemId = null;
 let iconCatalog = {};
 let pendingDeleteId = null;
 let itemSearchTerm = '';
-let iconSearchTerm = '';
+let selectedCategory = null;
 
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -24,16 +24,16 @@ function render() {
       const img = document.createElement('img');
       img.src = item.icon;
       img.alt = item.name;
-    div.appendChild(img);
-    const name = document.createElement('span');
-    name.textContent = `${item.name} (${item.category}) - ${item.quantity} ${item.unit || ''}`;
-    div.appendChild(name);
-    const actions = document.createElement('div');
-    actions.className = 'item-actions';
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Editar';
-    editBtn.onclick = () => editItem(item.id);
-    actions.appendChild(editBtn);
+      div.appendChild(img);
+      const name = document.createElement('span');
+      name.textContent = `${item.name} (${item.category}) - ${item.quantity} ${item.unit || ''}`;
+      div.appendChild(name);
+      const actions = document.createElement('div');
+      actions.className = 'item-actions';
+      const editBtn = document.createElement('button');
+      editBtn.textContent = 'Editar';
+      editBtn.onclick = () => editItem(item.id);
+      actions.appendChild(editBtn);
       const delBtn = document.createElement('button');
       delBtn.textContent = 'Eliminar';
       delBtn.onclick = () => deleteItem(item.id);
@@ -46,76 +46,83 @@ function render() {
 function openModal() {
   editingItemId = null;
   selectedFood = null;
-  document.getElementById('add-form').classList.add('hidden');
-  document.getElementById('food-qty').value = 1;
-  document.getElementById('food-unit').value = 'unidades';
-  document.getElementById('food-exp').value = '';
-  const categorySelect = document.getElementById('category-select');
-  const grid = document.getElementById('icon-grid');
-  const searchInput = document.getElementById('icon-search');
-  grid.innerHTML = '';
-  categorySelect.innerHTML = '';
-  const allOpt = document.createElement('option');
-  allOpt.value = 'Todos';
-  allOpt.textContent = 'Todos';
-  categorySelect.appendChild(allOpt);
-  Object.keys(iconCatalog).forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat;
-    opt.textContent = cat;
-    categorySelect.appendChild(opt);
-  });
-  categorySelect.value = 'Todos';
-  categorySelect.onchange = () => renderIcons(categorySelect.value, iconSearchTerm);
-  searchInput.value = '';
-  iconSearchTerm = '';
-  searchInput.oninput = () => {
-    iconSearchTerm = searchInput.value.toLowerCase();
-    renderIcons(categorySelect.value, iconSearchTerm);
-  };
-  renderIcons('Todos', '');
+  selectedCategory = null;
+  showSelectStep();
   document.getElementById('add-modal').classList.remove('hidden');
 }
 
-function renderIcons(category, search) {
-  const grid = document.getElementById('icon-grid');
-  grid.innerHTML = '';
-  const cats = category === 'Todos' ? Object.keys(iconCatalog) : [category];
-  cats.forEach(cat => {
-    const foods = (iconCatalog[cat] || []).filter(f =>
-      f.name.toLowerCase().includes(search.toLowerCase())
-    );
-    if (foods.length === 0) return;
-    const section = document.createElement('div');
-    section.className = 'icon-category';
-    const title = document.createElement('h3');
-    title.textContent = cat;
-    section.appendChild(title);
-    const list = document.createElement('div');
-    list.className = 'icon-category-grid';
-    foods.forEach(food => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'icon-btn';
-      btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
-      btn.onclick = () => selectFood({ ...food, category: cat });
-      list.appendChild(btn);
-    });
-    section.appendChild(list);
-    grid.appendChild(section);
+function showSelectStep() {
+  document.getElementById('selection-step').classList.remove('hidden');
+  document.getElementById('add-form').classList.add('hidden');
+  renderCategories();
+  renderItems(selectedCategory);
+}
+
+function renderCategories() {
+  const container = document.getElementById('category-section');
+  if (!container) return;
+  container.innerHTML = '';
+  Object.keys(iconCatalog).forEach(cat => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'category-btn';
+    if (selectedCategory === cat) btn.classList.add('active');
+    let icon = '';
+    if (cat === 'Frutas') icon = 'icons/Frutas/fruta_icon.png';
+    else if (cat === 'Verduras') icon = 'icons/Verduras/vegetal_icon.png';
+    else icon = iconCatalog[cat][0]?.icon || '';
+    btn.innerHTML = `<img src="${icon}" alt="${cat}"><span>${cat}</span>`;
+    btn.onclick = () => { selectedCategory = cat; renderCategories(); renderItems(cat); };
+    container.appendChild(btn);
+  });
+}
+
+function renderItems(cat) {
+  const container = document.getElementById('items-section');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!cat) return;
+  (iconCatalog[cat] || []).forEach(food => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'item-btn';
+    btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
+    btn.onclick = () => selectFood({ ...food, category: cat });
+    container.appendChild(btn);
   });
 }
 
 function closeModal() {
   editingItemId = null;
+  selectedFood = null;
+  selectedCategory = null;
   document.getElementById('add-modal').classList.add('hidden');
 }
 
 function selectFood(food) {
   selectedFood = food;
-  document.getElementById('selected-icon').src = food.icon;
-  document.getElementById('selected-name').textContent = food.name;
+  showDetailsStep();
+}
+
+function showDetailsStep(item) {
+  document.getElementById('selection-step').classList.add('hidden');
   document.getElementById('add-form').classList.remove('hidden');
+  document.getElementById('detail-icon').src = selectedFood.icon;
+  document.getElementById('detail-name').textContent = selectedFood.name;
+  document.getElementById('detail-category').textContent = selectedFood.category;
+  document.getElementById('detail-location').value = item ? item.location : document.body.dataset.location;
+  document.getElementById('detail-qty').value = item ? item.quantity : 1;
+  document.getElementById('detail-unit').value = item ? item.unit : 'unidades';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('detail-reg').value = item ? item.registered : today;
+  document.getElementById('detail-exp').value = item ? item.expiration || '' : '';
+  document.getElementById('detail-note').value = item ? item.note || '' : '';
+}
+
+function backToSelect() {
+  editingItemId = null;
+  selectedFood = null;
+  showSelectStep();
 }
 
 function editItem(id) {
@@ -123,13 +130,8 @@ function editItem(id) {
   if (!item) return;
   editingItemId = id;
   selectedFood = { name: item.name, icon: item.icon, category: item.category };
-  document.getElementById('selected-icon').src = item.icon;
-  document.getElementById('selected-name').textContent = item.name;
-  document.getElementById('food-qty').value = item.quantity;
-  document.getElementById('food-unit').value = item.unit;
-  document.getElementById('food-exp').value = item.expiration || '';
-  document.getElementById('add-form').classList.remove('hidden');
   document.getElementById('add-modal').classList.remove('hidden');
+  showDetailsStep(item);
 }
 
 function deleteItem(id) {
@@ -160,6 +162,7 @@ document.getElementById('add-btn')?.addEventListener('click', openModal);
 document.getElementById('close-modal')?.addEventListener('click', closeModal);
 document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
 document.getElementById('confirm-cancel')?.addEventListener('click', cancelDelete);
+document.getElementById('back-btn')?.addEventListener('click', backToSelect);
 document.getElementById('item-search')?.addEventListener('input', e => {
   itemSearchTerm = e.target.value.toLowerCase();
   render();
@@ -168,19 +171,24 @@ document.getElementById('item-search')?.addEventListener('input', e => {
 document.getElementById('add-form')?.addEventListener('submit', e => {
   e.preventDefault();
   if (!selectedFood) return;
-  const quantity = parseInt(document.getElementById('food-qty').value, 10) || 1;
-  const unit = document.getElementById('food-unit').value;
-  const expiration = document.getElementById('food-exp').value;
-  const location = document.body.dataset.location;
+  const quantity = parseInt(document.getElementById('detail-qty').value, 10) || 1;
+  const unit = document.getElementById('detail-unit').value;
+  const expiration = document.getElementById('detail-exp').value;
+  const location = document.getElementById('detail-location').value;
+  const note = document.getElementById('detail-note').value;
+  const registered = document.getElementById('detail-reg').value;
   if (editingItemId !== null) {
     const item = items.find(i => i.id === editingItemId);
     if (item) {
       item.quantity = quantity;
       item.unit = unit;
       item.expiration = expiration;
+      item.location = location;
+      item.note = note;
+      item.registered = registered;
     }
   } else {
-    const item = { id: Date.now(), name: selectedFood.name, icon: selectedFood.icon, category: selectedFood.category, quantity, unit, expiration, location };
+    const item = { id: Date.now(), name: selectedFood.name, icon: selectedFood.icon, category: selectedFood.category, quantity, unit, expiration, location, note, registered };
     items.push(item);
   }
   save();
@@ -193,3 +201,4 @@ fetch('icons.json')
   .then(data => { iconCatalog = data; });
 
 render();
+
