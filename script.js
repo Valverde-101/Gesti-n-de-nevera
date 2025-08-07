@@ -44,6 +44,9 @@ function render() {
     groups[cat].forEach(item => {
       const div = document.createElement('div');
       div.className = 'item';
+      if (item.quantity <= 0) {
+        div.classList.add('depleted');
+      }
       const img = document.createElement('img');
       img.src = item.icon;
       img.alt = item.name;
