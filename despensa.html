@@ -14,6 +14,7 @@
   </nav>
   <main>
     <h1>Despensa</h1>
+    <input type="text" id="item-search" class="search-bar" placeholder="Buscar...">
     <div id="items"></div>
     <button id="add-btn" class="add-button">+</button>
   </main>
@@ -21,6 +22,7 @@
   <div id="add-modal" class="modal hidden">
     <div class="modal-content">
       <h2>Selecciona un alimento</h2>
+      <input type="text" id="icon-search" class="search-bar" placeholder="Buscar iconos...">
       <select id="category-select"></select>
       <div id="icon-grid"></div>
       <form id="add-form" class="hidden">
@@ -38,6 +40,21 @@
         <button type="submit">Agregar</button>
       </form>
       <button id="close-modal" type="button">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="confirm-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Eliminar elemento</h2>
+      <div class="selected">
+        <img id="confirm-icon" alt="">
+        <span id="confirm-name"></span>
+      </div>
+      <p>¿Estás seguro de eliminar este elemento?</p>
+      <div class="modal-actions">
+        <button id="confirm-delete" type="button">Eliminar</button>
+        <button id="confirm-cancel" type="button">Cancelar</button>
+      </div>
     </div>
   </div>
 

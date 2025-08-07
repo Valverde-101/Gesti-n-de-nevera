@@ -3,6 +3,9 @@ let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 let selectedFood = null;
 let editingItemId = null;
 let iconCatalog = {};
+let pendingDeleteId = null;
+let itemSearchTerm = '';
+let iconSearchTerm = '';
 
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -13,12 +16,14 @@ function render() {
   if (!container) return;
   container.innerHTML = '';
   const location = document.body.dataset.location;
-  items.filter(i => i.location === location).forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'item';
-    const img = document.createElement('img');
-    img.src = item.icon;
-    img.alt = item.name;
+  items
+    .filter(i => i.location === location && i.name.toLowerCase().includes(itemSearchTerm))
+    .forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      const img = document.createElement('img');
+      img.src = item.icon;
+      img.alt = item.name;
     div.appendChild(img);
     const name = document.createElement('span');
     name.textContent = `${item.name} (${item.category}) - ${item.quantity} ${item.unit || ''}`;
@@ -29,13 +34,13 @@ function render() {
     editBtn.textContent = 'Editar';
     editBtn.onclick = () => editItem(item.id);
     actions.appendChild(editBtn);
-    const delBtn = document.createElement('button');
-    delBtn.textContent = 'Eliminar';
-    delBtn.onclick = () => deleteItem(item.id);
-    actions.appendChild(delBtn);
-    div.appendChild(actions);
-    container.appendChild(div);
-  });
+      const delBtn = document.createElement('button');
+      delBtn.textContent = 'Eliminar';
+      delBtn.onclick = () => deleteItem(item.id);
+      actions.appendChild(delBtn);
+      div.appendChild(actions);
+      container.appendChild(div);
+    });
 }
 
 function openModal() {
@@ -47,31 +52,57 @@ function openModal() {
   document.getElementById('food-exp').value = '';
   const categorySelect = document.getElementById('category-select');
   const grid = document.getElementById('icon-grid');
+  const searchInput = document.getElementById('icon-search');
   grid.innerHTML = '';
   categorySelect.innerHTML = '';
+  const allOpt = document.createElement('option');
+  allOpt.value = 'Todos';
+  allOpt.textContent = 'Todos';
+  categorySelect.appendChild(allOpt);
   Object.keys(iconCatalog).forEach(cat => {
     const opt = document.createElement('option');
     opt.value = cat;
     opt.textContent = cat;
     categorySelect.appendChild(opt);
   });
-  categorySelect.onchange = () => renderIcons(categorySelect.value);
-  if (categorySelect.options.length > 0) {
-    renderIcons(categorySelect.value);
-  }
+  categorySelect.value = 'Todos';
+  categorySelect.onchange = () => renderIcons(categorySelect.value, iconSearchTerm);
+  searchInput.value = '';
+  iconSearchTerm = '';
+  searchInput.oninput = () => {
+    iconSearchTerm = searchInput.value.toLowerCase();
+    renderIcons(categorySelect.value, iconSearchTerm);
+  };
+  renderIcons('Todos', '');
   document.getElementById('add-modal').classList.remove('hidden');
 }
 
-function renderIcons(category) {
+function renderIcons(category, search) {
   const grid = document.getElementById('icon-grid');
   grid.innerHTML = '';
-  (iconCatalog[category] || []).forEach(food => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'icon-btn';
-    btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
-    btn.onclick = () => selectFood({ ...food, category });
-    grid.appendChild(btn);
+  const cats = category === 'Todos' ? Object.keys(iconCatalog) : [category];
+  cats.forEach(cat => {
+    const foods = (iconCatalog[cat] || []).filter(f =>
+      f.name.toLowerCase().includes(search.toLowerCase())
+    );
+    if (foods.length === 0) return;
+    const section = document.createElement('div');
+    section.className = 'icon-category';
+    const title = document.createElement('h3');
+    title.textContent = cat;
+    section.appendChild(title);
+    const list = document.createElement('div');
+    list.className = 'icon-category-grid';
+    foods.forEach(food => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'icon-btn';
+      btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
+      btn.onclick = () => selectFood({ ...food, category: cat });
+      list.appendChild(btn);
+    });
+    section.appendChild(list);
+    grid.appendChild(section);
   });
 }
 
@@ -102,13 +133,37 @@ function editItem(id) {
 }
 
 function deleteItem(id) {
-  items = items.filter(i => i.id !== id);
-  save();
-  render();
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  pendingDeleteId = id;
+  document.getElementById('confirm-icon').src = item.icon;
+  document.getElementById('confirm-name').textContent = item.name;
+  document.getElementById('confirm-modal').classList.remove('hidden');
+}
+
+function confirmDelete() {
+  if (pendingDeleteId !== null) {
+    items = items.filter(i => i.id !== pendingDeleteId);
+    save();
+    render();
+  }
+  pendingDeleteId = null;
+  document.getElementById('confirm-modal').classList.add('hidden');
+}
+
+function cancelDelete() {
+  pendingDeleteId = null;
+  document.getElementById('confirm-modal').classList.add('hidden');
 }
 
 document.getElementById('add-btn')?.addEventListener('click', openModal);
 document.getElementById('close-modal')?.addEventListener('click', closeModal);
+document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
+document.getElementById('confirm-cancel')?.addEventListener('click', cancelDelete);
+document.getElementById('item-search')?.addEventListener('input', e => {
+  itemSearchTerm = e.target.value.toLowerCase();
+  render();
+});
 
 document.getElementById('add-form')?.addEventListener('submit', e => {
   e.preventDefault();
