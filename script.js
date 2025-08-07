@@ -209,7 +209,8 @@ document.getElementById('modal-item-search')?.addEventListener('input', e => {
 document.getElementById('add-form')?.addEventListener('submit', e => {
   e.preventDefault();
   if (!selectedFood) return;
-  const quantity = parseInt(document.getElementById('detail-qty').value, 10) || 1;
+  let quantity = parseInt(document.getElementById('detail-qty').value, 10);
+  if (isNaN(quantity)) quantity = 1;
   const unit = document.getElementById('detail-unit').value;
   const expiration = document.getElementById('detail-exp').value;
   const location = document.getElementById('detail-location').value;
