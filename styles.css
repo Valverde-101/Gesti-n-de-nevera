@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 1rem;
+}
+section {
+  margin-bottom: 2rem;
+}
+.item {
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.item span.name {
+  flex: 1;
+}
+.item span.expiration {
+  font-size: 0.9rem;
+}
+.expired {
+  color: red;
+}
+.soon {
+  color: orange;
+}
+.location {
+  margin-top: 1rem;
+}

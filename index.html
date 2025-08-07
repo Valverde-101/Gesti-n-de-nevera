@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Nevera</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Gestión de Nevera</h1>
+  <section id="add-section">
+    <h2>Agregar alimento</h2>
+    <form id="add-form">
+      <input list="food-list" id="food-name" placeholder="Nombre" required>
+      <datalist id="food-list"></datalist>
+      <input type="number" id="food-quantity" value="1" min="1">
+      <select id="food-location">
+        <option value="Nevera">Nevera</option>
+        <option value="Congelador">Congelador</option>
+        <option value="Despensa">Despensa</option>
+      </select>
+      <input list="groups" id="food-group" placeholder="Categoría">
+      <datalist id="groups"></datalist>
+      <input type="date" id="food-expiration">
+      <button type="submit">Agregar</button>
+    </form>
+  </section>
+  <section id="inventory-section">
+    <h2>Inventario</h2>
+    <div id="inventory"></div>
+  </section>
+  <section id="shopping-section">
+    <h2>Lista de Compras</h2>
+    <ul id="shopping-list"></ul>
+  </section>
+  <script src="script.js"></script>
+</body>
+</html>
