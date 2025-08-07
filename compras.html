@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compras - Wonder Fridge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="top-menu">
+    <a href="nevera.html">Nevera</a>
+    <a href="congelador.html">Congelador</a>
+    <a href="despensa.html">Despensa</a>
+    <a href="compras.html">Compras</a>
+  </nav>
+  <main>
+    <h1>Lista de Compras</h1>
+    <input type="text" id="item-search" class="search-bar" placeholder="Buscar...">
+    <div id="shopping-items"></div>
+    <button id="quick-add-btn" class="quick-add">⚡+</button>
+    <button id="add-btn" class="add-button">+</button>
+  </main>
+
+  <div id="add-modal" class="modal hidden">
+    <div class="modal-content">
+      <div id="selection-step">
+        <div id="category-section" class="category-section"></div>
+        <input type="text" id="modal-item-search" class="search-bar" placeholder="Buscar ítem...">
+        <div id="items-section" class="items-section"></div>
+      </div>
+      <form id="add-form" class="hidden">
+        <button type="button" id="back-btn">Volver</button>
+        <div class="selected">
+          <img id="detail-icon" alt="">
+          <div>
+            <h3 id="detail-name"></h3>
+            <p id="detail-category"></p>
+          </div>
+        </div>
+        <label>Cantidad
+          <input type="number" id="detail-qty" min="1" value="1">
+        </label>
+        <label>Unidad
+          <select id="detail-unit">
+            <option value="unidades">Unidades</option>
+            <option value="kg">Kilos</option>
+            <option value="l">Litros</option>
+          </select>
+        </label>
+        <button type="submit">Agregar</button>
+      </form>
+      <button id="close-modal" type="button">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="quick-modal" class="modal hidden">
+    <div class="modal-content">
+      <p>¿Desea agregar todos los alimentos con una cantidad de 0 a la lista de compras? Los alimentos que ya se encuentren en la lista no se agregarán.</p>
+      <div class="modal-actions">
+        <button id="quick-confirm" type="button">Agregar</button>
+        <button id="quick-cancel" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="shopping.js"></script>
+</body>
+</html>

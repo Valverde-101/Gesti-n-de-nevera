@@ -29,156 +29,176 @@
       "icon": "icons/Frutas/fresa_icon.png"
     },
     {
-      "name": "Fruta",
-      "icon": "icons/Frutas/fruta_icon.png"
-    },
-    {
-      "name": "Goji",
-      "icon": "icons/Frutas/goji_icon.png"
-    },
-    {
-      "name": "Granada",
-      "icon": "icons/Frutas/granada_icon.png"
-    },
-    {
-      "name": "Haba De Soja",
-      "icon": "icons/Frutas/haba_de_soja_icon.png"
-    },
-    {
-      "name": "Hierba",
-      "icon": "icons/Frutas/hierba_icon.png"
-    },
-    {
-      "name": "Jengibre",
-      "icon": "icons/Frutas/jengibre_icon.png"
-    },
-    {
-      "name": "Kiwi",
-      "icon": "icons/Frutas/kiwi_icon.png"
-    },
-    {
-      "name": "Lechuga",
-      "icon": "icons/Frutas/lechuga_icon.png"
-    },
-    {
-      "name": "Lima",
-      "icon": "icons/Frutas/lima_icon.png"
-    },
-    {
-      "name": "Limn",
-      "icon": "icons/Frutas/limn_icon.png"
-    },
-    {
-      "name": "Lychee",
-      "icon": "icons/Frutas/lychee_icon.png"
-    },
-    {
-      "name": "Man",
-      "icon": "icons/Frutas/man_icon.png"
-    },
-    {
       "name": "Mango",
       "icon": "icons/Frutas/mango_icon.png"
-    },
-    {
-      "name": "Mangostn",
-      "icon": "icons/Frutas/mangostn_icon.png"
     },
     {
       "name": "Manzana",
       "icon": "icons/Frutas/manzana_icon.png"
     },
     {
-      "name": "Manzana Rosa",
-      "icon": "icons/Frutas/manzana_rosa_icon.png"
+      "name": "MelocotóN",
+      "icon": "icons/Frutas/melocotón_icon.png"
     },
     {
-      "name": "Maracuy",
-      "icon": "icons/Frutas/maracuy_icon.png"
-    },
-    {
-      "name": "Maz",
-      "icon": "icons/Frutas/maz_icon.png"
-    },
-    {
-      "name": "Meln",
-      "icon": "icons/Frutas/meln_icon.png"
-    },
-    {
-      "name": "Melocotn",
-      "icon": "icons/Frutas/melocotn_icon.png"
-    },
-    {
-      "name": "Membrillo",
-      "icon": "icons/Frutas/membrillo_icon.png"
-    },
-    {
-      "name": "Nabo",
-      "icon": "icons/Frutas/nabo_icon.png"
+      "name": "MelóN",
+      "icon": "icons/Frutas/melón_icon.png"
     },
     {
       "name": "Naranja",
       "icon": "icons/Frutas/naranja_icon.png"
     },
     {
-      "name": "Natillas Appel",
-      "icon": "icons/Frutas/natillas_appel_icon.png"
-    },
-    {
-      "name": "Nuez",
-      "icon": "icons/Frutas/nuez_icon.png"
-    },
-    {
-      "name": "Pacana",
-      "icon": "icons/Frutas/pacana_icon.png"
-    },
-    {
-      "name": "Palmera Datilera",
-      "icon": "icons/Frutas/palmera_datilera_icon.png"
-    },
-    {
       "name": "Papaya",
       "icon": "icons/Frutas/papaya_icon.png"
-    },
-    {
-      "name": "Patatas",
-      "icon": "icons/Frutas/patatas_icon.png"
-    },
-    {
-      "name": "Pepino",
-      "icon": "icons/Frutas/pepino_icon.png"
     },
     {
       "name": "Pera",
       "icon": "icons/Frutas/pera_icon.png"
     },
     {
-      "name": "Physalis",
-      "icon": "icons/Frutas/physalis_icon.png"
+      "name": "PiñA",
+      "icon": "icons/Frutas/piña_icon.png"
     },
     {
-      "name": "Pia",
-      "icon": "icons/Frutas/pia_icon.png"
+      "name": "PláTano",
+      "icon": "icons/Frutas/plátano_icon.png"
     },
     {
-      "name": "Pimienta",
-      "icon": "icons/Frutas/pimienta_icon.png"
-    },
-    {
-      "name": "Pltano",
-      "icon": "icons/Frutas/pltano_icon.png"
-    },
-    {
-      "name": "Sanda",
-      "icon": "icons/Frutas/sanda_icon.png"
-    },
-    {
-      "name": "Tomate",
-      "icon": "icons/Frutas/tomate_icon.png"
+      "name": "SandíA",
+      "icon": "icons/Frutas/sandía_icon.png"
     },
     {
       "name": "Uva",
       "icon": "icons/Frutas/uva_icon.png"
+    }
+  ],
+  "Frutas Secas": [
+    {
+      "name": "Almendra",
+      "icon": "icons/Frutas Secas/almendra_icon.png"
+    },
+    {
+      "name": "Avellana",
+      "icon": "icons/Frutas Secas/avellana_icon.png"
+    },
+    {
+      "name": "Bellota",
+      "icon": "icons/Frutas Secas/bellota_icon.png"
+    },
+    {
+      "name": "Cacao",
+      "icon": "icons/Frutas Secas/cacao_icon.png"
+    },
+    {
+      "name": "Cardamomo",
+      "icon": "icons/Frutas Secas/cardamomo_icon.png"
+    },
+    {
+      "name": "CastañA",
+      "icon": "icons/Frutas Secas/castaña_icon.png"
+    },
+    {
+      "name": "Coco",
+      "icon": "icons/Frutas Secas/coco_icon.png"
+    },
+    {
+      "name": "Cono De Pino",
+      "icon": "icons/Frutas Secas/cono_de_pino_icon.png"
+    },
+    {
+      "name": "Granos De Café",
+      "icon": "icons/Frutas Secas/granos_de_café_icon.png"
+    },
+    {
+      "name": "Macadamia",
+      "icon": "icons/Frutas Secas/macadamia_icon.png"
+    },
+    {
+      "name": "Maní",
+      "icon": "icons/Frutas Secas/maní_icon.png"
+    },
+    {
+      "name": "Nueces De Brasil",
+      "icon": "icons/Frutas Secas/nueces_de_brasil_icon.png"
+    },
+    {
+      "name": "Nuez",
+      "icon": "icons/Frutas Secas/nuez_icon.png"
+    },
+    {
+      "name": "Nuez Moscada",
+      "icon": "icons/Frutas Secas/nuez_moscada_icon.png"
+    },
+    {
+      "name": "Pacana",
+      "icon": "icons/Frutas Secas/pacana_icon.png"
+    },
+    {
+      "name": "Pistacho",
+      "icon": "icons/Frutas Secas/pistacho_icon.png"
+    },
+    {
+      "name": "Semilla De Calabaza",
+      "icon": "icons/Frutas Secas/semilla_de_calabaza_icon.png"
+    },
+    {
+      "name": "Semilla De Girasol",
+      "icon": "icons/Frutas Secas/semilla_de_girasol_icon.png"
+    },
+    {
+      "name": "Semilla De Lino",
+      "icon": "icons/Frutas Secas/semilla_de_lino_icon.png"
+    },
+    {
+      "name": "SéSamo",
+      "icon": "icons/Frutas Secas/sésamo_icon.png"
+    }
+  ],
+  "Legumbres": [
+    {
+      "name": "Anacardo",
+      "icon": "icons/Legumbres/anacardo_icon.png"
+    },
+    {
+      "name": "ChíA",
+      "icon": "icons/Legumbres/chía_icon.png"
+    },
+    {
+      "name": "Edamame",
+      "icon": "icons/Legumbres/edamame_icon.png"
+    },
+    {
+      "name": "Frijoles",
+      "icon": "icons/Legumbres/frijoles_icon.png"
+    },
+    {
+      "name": "Frijoles Rojos",
+      "icon": "icons/Legumbres/frijoles_rojos_icon.png"
+    },
+    {
+      "name": "Garbanzos",
+      "icon": "icons/Legumbres/garbanzos_icon.png"
+    },
+    {
+      "name": "Guisantes",
+      "icon": "icons/Legumbres/guisantes_icon.png"
+    },
+    {
+      "name": "Haba De Soja",
+      "icon": "icons/Legumbres/haba_de_soja_icon.png"
+    },
+    {
+      "name": "JudíAs Verdes",
+      "icon": "icons/Legumbres/judías_verdes_icon.png"
+    },
+    {
+      "name": "Lentejas",
+      "icon": "icons/Legumbres/lentejas_icon.png"
+    },
+    {
+      "name": "MaíZ",
+      "icon": "icons/Legumbres/maíz_icon.png"
     }
   ],
   "Vegetales": [
@@ -199,12 +219,12 @@
       "icon": "icons/Vegetales/aguacate_icon.png"
     },
     {
-      "name": "Aj Picante",
-      "icon": "icons/Vegetales/aj_picante_icon.png"
-    },
-    {
       "name": "Ajo",
       "icon": "icons/Vegetales/ajo_icon.png"
+    },
+    {
+      "name": "Ají Picante",
+      "icon": "icons/Vegetales/ají_picante_icon.png"
     },
     {
       "name": "Albahaca",
@@ -215,8 +235,8 @@
       "icon": "icons/Vegetales/alcachofa_icon.png"
     },
     {
-      "name": "Algodn",
-      "icon": "icons/Vegetales/algodn_icon.png"
+      "name": "AlgodóN",
+      "icon": "icons/Vegetales/algodón_icon.png"
     },
     {
       "name": "Almendra",
@@ -231,8 +251,8 @@
       "icon": "icons/Vegetales/apio_icon.png"
     },
     {
-      "name": "Bamb",
-      "icon": "icons/Vegetales/bamb_icon.png"
+      "name": "Bambú",
+      "icon": "icons/Vegetales/bambú_icon.png"
     },
     {
       "name": "Batata",
@@ -251,12 +271,8 @@
       "icon": "icons/Vegetales/blanco_icon.png"
     },
     {
-      "name": "Brcoli",
-      "icon": "icons/Vegetales/brcoli_icon.png"
-    },
-    {
-      "name": "Caa De Azcar",
-      "icon": "icons/Vegetales/caa_de_azcar_icon.png"
+      "name": "BróColi",
+      "icon": "icons/Vegetales/brócoli_icon.png"
     },
     {
       "name": "Cacao",
@@ -267,12 +283,12 @@
       "icon": "icons/Vegetales/cactus_icon.png"
     },
     {
-      "name": "Caf",
-      "icon": "icons/Vegetales/caf_icon.png"
+      "name": "Café",
+      "icon": "icons/Vegetales/café_icon.png"
     },
     {
-      "name": "Calabacn",
-      "icon": "icons/Vegetales/calabacn_icon.png"
+      "name": "CalabacíN",
+      "icon": "icons/Vegetales/calabacín_icon.png"
     },
     {
       "name": "Calabaza",
@@ -287,12 +303,16 @@
       "icon": "icons/Vegetales/caucho_icon.png"
     },
     {
+      "name": "CañA De AzúCar",
+      "icon": "icons/Vegetales/caña_de_azúcar_icon.png"
+    },
+    {
       "name": "Cebolla",
       "icon": "icons/Vegetales/cebolla_icon.png"
     },
     {
-      "name": "Cebolln",
-      "icon": "icons/Vegetales/cebolln_icon.png"
+      "name": "CebollíN",
+      "icon": "icons/Vegetales/cebollín_icon.png"
     },
     {
       "name": "Chalote",
@@ -315,8 +335,8 @@
       "icon": "icons/Vegetales/espinacas_icon.png"
     },
     {
-      "name": "Esprragos",
-      "icon": "icons/Vegetales/esprragos_icon.png"
+      "name": "EspáRragos",
+      "icon": "icons/Vegetales/espárragos_icon.png"
     },
     {
       "name": "Frijoles",
@@ -327,20 +347,120 @@
       "icon": "icons/Vegetales/fruta_estrella_icon.png"
     },
     {
+      "name": "Fruta",
+      "icon": "icons/Vegetales/fruta_icon.png"
+    },
+    {
       "name": "Girasol",
       "icon": "icons/Vegetales/girasol_icon.png"
+    },
+    {
+      "name": "Goji",
+      "icon": "icons/Vegetales/goji_icon.png"
+    },
+    {
+      "name": "Granada",
+      "icon": "icons/Vegetales/granada_icon.png"
+    },
+    {
+      "name": "Haba De Soja",
+      "icon": "icons/Vegetales/haba_de_soja_icon.png"
+    },
+    {
+      "name": "Hierba",
+      "icon": "icons/Vegetales/hierba_icon.png"
     },
     {
       "name": "Hinojo",
       "icon": "icons/Vegetales/hinojo_icon.png"
     },
     {
-      "name": "Puerro",
-      "icon": "icons/Vegetales/puerro_icon.png"
+      "name": "Jengibre",
+      "icon": "icons/Vegetales/jengibre_icon.png"
     },
     {
-      "name": "Rbano",
-      "icon": "icons/Vegetales/rbano_icon.png"
+      "name": "Kiwi",
+      "icon": "icons/Vegetales/kiwi_icon.png"
+    },
+    {
+      "name": "Lechuga",
+      "icon": "icons/Vegetales/lechuga_icon.png"
+    },
+    {
+      "name": "Lima",
+      "icon": "icons/Vegetales/lima_icon.png"
+    },
+    {
+      "name": "LimóN",
+      "icon": "icons/Vegetales/limón_icon.png"
+    },
+    {
+      "name": "Lychee",
+      "icon": "icons/Vegetales/lychee_icon.png"
+    },
+    {
+      "name": "MangostáN",
+      "icon": "icons/Vegetales/mangostán_icon.png"
+    },
+    {
+      "name": "Manzana Rosa",
+      "icon": "icons/Vegetales/manzana_rosa_icon.png"
+    },
+    {
+      "name": "Maní",
+      "icon": "icons/Vegetales/maní_icon.png"
+    },
+    {
+      "name": "Maracuyá",
+      "icon": "icons/Vegetales/maracuyá_icon.png"
+    },
+    {
+      "name": "MaíZ",
+      "icon": "icons/Vegetales/maíz_icon.png"
+    },
+    {
+      "name": "Membrillo",
+      "icon": "icons/Vegetales/membrillo_icon.png"
+    },
+    {
+      "name": "Nabo",
+      "icon": "icons/Vegetales/nabo_icon.png"
+    },
+    {
+      "name": "Natillas Appel",
+      "icon": "icons/Vegetales/natillas_appel_icon.png"
+    },
+    {
+      "name": "Nuez",
+      "icon": "icons/Vegetales/nuez_icon.png"
+    },
+    {
+      "name": "Pacana",
+      "icon": "icons/Vegetales/pacana_icon.png"
+    },
+    {
+      "name": "Palmera Datilera",
+      "icon": "icons/Vegetales/palmera_datilera_icon.png"
+    },
+    {
+      "name": "Patatas",
+      "icon": "icons/Vegetales/patatas_icon.png"
+    },
+    {
+      "name": "Pepino",
+      "icon": "icons/Vegetales/pepino_icon.png"
+    },
+    {
+      "name": "Physalis",
+      "icon": "icons/Vegetales/physalis_icon.png"
+    },
+    {
+      "name": "Pimienta",
+      "icon": "icons/Vegetales/pimienta_icon.png"
+    },
+    {
+      "name": "Puerro",
+      "icon": "icons/Vegetales/puerro_icon.png"
     },
     {
       "name": "Remolacha",
@@ -355,12 +475,20 @@
       "icon": "icons/Vegetales/repollo_rojo_icon.png"
     },
     {
+      "name": "RáBano",
+      "icon": "icons/Vegetales/rábano_icon.png"
+    },
+    {
       "name": "Seta",
       "icon": "icons/Vegetales/seta_icon.png"
     },
     {
       "name": "Tamarindo",
       "icon": "icons/Vegetales/tamarindo_icon.png"
+    },
+    {
+      "name": "Tomate",
+      "icon": "icons/Vegetales/tomate_icon.png"
     },
     {
       "name": "Trigo",
