@@ -79,6 +79,19 @@ main {
   height: 40px;
 }
 
+.item-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.item-actions button {
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+}
+
 /* Modal */
 .modal {
   position: fixed;

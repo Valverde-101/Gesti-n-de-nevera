@@ -21,6 +21,7 @@
   <div id="add-modal" class="modal hidden">
     <div class="modal-content">
       <h2>Selecciona un alimento</h2>
+      <select id="category-select"></select>
       <div id="icon-grid"></div>
       <form id="add-form" class="hidden">
         <div class="selected">
@@ -28,7 +29,11 @@
           <span id="selected-name"></span>
         </div>
         <input type="number" id="food-qty" min="1" value="1">
-        <input type="text" id="food-unit" placeholder="Unidad (ej. unidades, kg, bolsas)">
+        <select id="food-unit">
+          <option value="unidades">Unidades</option>
+          <option value="kg">Kilos</option>
+          <option value="l">Litros</option>
+        </select>
         <input type="date" id="food-exp">
         <button type="submit">Agregar</button>
       </form>
