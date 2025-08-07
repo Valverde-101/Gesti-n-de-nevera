@@ -7,6 +7,8 @@ let pendingDeleteId = null;
 let itemSearchTerm = '';
 let modalSearchTerm = '';
 let selectedCategory = null;
+const SHOPPING_KEY = 'shopping-list';
+let shoppingList = JSON.parse(localStorage.getItem(SHOPPING_KEY) || '[]');
 
 const CATEGORY_ICONS = {
   Frutas: 'icons/Categorias/Frutas.png',
@@ -21,6 +23,10 @@ const CATEGORY_ICONS = {
 
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+function saveShopping() {
+  localStorage.setItem(SHOPPING_KEY, JSON.stringify(shoppingList));
 }
 
 function render() {
@@ -49,6 +55,7 @@ function render() {
       if (item.quantity <= 0) {
         div.classList.add('depleted');
       }
+      div.onclick = () => editItem(item.id);
       const img = document.createElement('img');
       img.src = item.icon;
       img.alt = item.name;
@@ -56,17 +63,6 @@ function render() {
       const name = document.createElement('span');
       name.textContent = `${item.name} - ${item.quantity} ${item.unit || ''}`;
       div.appendChild(name);
-      const actions = document.createElement('div');
-      actions.className = 'item-actions';
-      const editBtn = document.createElement('button');
-      editBtn.textContent = 'Editar';
-      editBtn.onclick = () => editItem(item.id);
-      actions.appendChild(editBtn);
-      const delBtn = document.createElement('button');
-      delBtn.textContent = 'Eliminar';
-      delBtn.onclick = () => deleteItem(item.id);
-      actions.appendChild(delBtn);
-      div.appendChild(actions);
       section.appendChild(div);
     });
     container.appendChild(section);
@@ -135,6 +131,24 @@ function closeModal() {
   document.getElementById('add-modal').classList.add('hidden');
 }
 
+function addToShoppingList() {
+  if (!selectedFood) return;
+  let quantity = parseInt(document.getElementById('detail-qty').value, 10);
+  if (isNaN(quantity) || quantity < 1) quantity = 1;
+  const unit = document.getElementById('detail-unit').value;
+  const item = {
+    id: Date.now(),
+    name: selectedFood.name,
+    icon: selectedFood.icon,
+    category: selectedFood.category,
+    quantity,
+    unit,
+    purchased: false
+  };
+  shoppingList.push(item);
+  saveShopping();
+}
+
 function selectFood(food) {
   selectedFood = food;
   showDetailsStep();
@@ -153,12 +167,26 @@ function showDetailsStep(item) {
   document.getElementById('detail-reg').value = item ? item.registered : today;
   document.getElementById('detail-exp').value = item ? item.expiration || '' : '';
   document.getElementById('detail-note').value = item ? item.note || '' : '';
+  document.getElementById('save-btn').textContent = item ? 'Guardar' : 'Agregar';
+  const deleteBtn = document.getElementById('delete-btn');
+  const closeBtn = document.getElementById('close-modal');
+  if (item) {
+    deleteBtn.classList.remove('hidden');
+    closeBtn.classList.add('hidden');
+  } else {
+    deleteBtn.classList.add('hidden');
+    closeBtn.classList.remove('hidden');
+  }
 }
 
 function backToSelect() {
-  editingItemId = null;
-  selectedFood = null;
-  showSelectStep();
+  if (editingItemId !== null) {
+    closeModal();
+  } else {
+    editingItemId = null;
+    selectedFood = null;
+    showSelectStep();
+  }
 }
 
 function editItem(id) {
@@ -184,6 +212,7 @@ function confirmDelete() {
     items = items.filter(i => i.id !== pendingDeleteId);
     save();
     render();
+    closeModal();
   }
   pendingDeleteId = null;
   document.getElementById('confirm-modal').classList.add('hidden');
@@ -199,6 +228,10 @@ document.getElementById('close-modal')?.addEventListener('click', closeModal);
 document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
 document.getElementById('confirm-cancel')?.addEventListener('click', cancelDelete);
 document.getElementById('back-btn')?.addEventListener('click', backToSelect);
+document.getElementById('add-shopping-btn')?.addEventListener('click', addToShoppingList);
+document.getElementById('delete-btn')?.addEventListener('click', () => {
+  if (editingItemId !== null) deleteItem(editingItemId);
+});
 document.getElementById('item-search')?.addEventListener('input', e => {
   itemSearchTerm = e.target.value.toLowerCase();
   render();

@@ -29,7 +29,9 @@
         <div id="items-section" class="items-section"></div>
       </div>
       <form id="add-form" class="hidden">
-        <button type="button" id="back-btn">Volver</button>
+        <div class="form-top">
+          <button type="button" id="back-btn">←</button>
+        </div>
         <div class="selected">
           <img id="detail-icon" alt="">
           <div>
@@ -47,9 +49,11 @@
             <option value="l">Litros</option>
           </select>
         </label>
-        <button type="submit">Agregar</button>
+        <div class="form-actions">
+          <button type="submit" id="save-btn">Agregar</button>
+          <button type="button" id="close-modal">Cerrar</button>
+        </div>
       </form>
-      <button id="close-modal" type="button">Cerrar</button>
     </div>
   </div>
 
