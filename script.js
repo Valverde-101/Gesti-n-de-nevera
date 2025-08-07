@@ -1,143 +1,80 @@
-const FOOD_KEY = 'items';
-const GROUP_KEY = 'groups';
-let items = JSON.parse(localStorage.getItem(FOOD_KEY) || '[]');
-let groups = JSON.parse(localStorage.getItem(GROUP_KEY) || '[]');
+const STORAGE_KEY = 'items';
+let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let selectedFood = null;
+
+const PREDEFINED_FOODS = [
+  { name: 'Manzana', icon: 'icons/manzana_icon.png' },
+  { name: 'Cereza', icon: 'icons/cereza_icon.png' },
+  { name: 'Zanahoria', icon: 'icons/zanahoria_icon.png' },
+  { name: 'Patatas', icon: 'icons/patatas_icon.png' },
+  { name: 'Naranja', icon: 'icons/naranja_icon.png' }
+];
 
 function save() {
-  localStorage.setItem(FOOD_KEY, JSON.stringify(items));
-  localStorage.setItem(GROUP_KEY, JSON.stringify(groups));
-}
-
-function loadFoodsList() {
-  fetch('foods.json').then(r => r.json()).then(list => {
-    const data = document.getElementById('food-list');
-    list.forEach(name => {
-      const opt = document.createElement('option');
-      opt.value = name;
-      data.appendChild(opt);
-    });
-  });
-}
-
-function loadGroups() {
-  const data = document.getElementById('groups');
-  data.innerHTML = '';
-  groups.forEach(g => {
-    const opt = document.createElement('option');
-    opt.value = g;
-    data.appendChild(opt);
-  });
-}
-
-function expirationClass(date) {
-  if (!date) return '';
-  const diff = (new Date(date) - new Date()) / 86400000;
-  if (diff < 0) return 'expired';
-  if (diff < 3) return 'soon';
-  return '';
-}
-
-function renderInventory() {
-  const container = document.getElementById('inventory');
-  container.innerHTML = '';
-  const locations = ['Nevera', 'Congelador', 'Despensa'];
-  locations.forEach(loc => {
-    const locDiv = document.createElement('div');
-    locDiv.className = 'location';
-    const h3 = document.createElement('h3');
-    h3.textContent = loc;
-    locDiv.appendChild(h3);
-    items.filter(it => it.location === loc).forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'item';
-
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'name';
-      nameSpan.textContent = item.name;
-      div.appendChild(nameSpan);
-
-      const minus = document.createElement('button');
-      minus.textContent = '-';
-      minus.onclick = () => {
-        if (item.quantity > 1) {
-          item.quantity--;
-          save();
-          render();
-        }
-      };
-      div.appendChild(minus);
-
-      const qty = document.createElement('span');
-      qty.textContent = item.quantity;
-      div.appendChild(qty);
-
-      const plus = document.createElement('button');
-      plus.textContent = '+';
-      plus.onclick = () => {
-        item.quantity++;
-        save();
-        render();
-      };
-      div.appendChild(plus);
-
-      const exp = document.createElement('span');
-      exp.className = 'expiration ' + expirationClass(item.expiration);
-      if (item.expiration) {
-        exp.textContent = new Date(item.expiration).toLocaleDateString();
-      }
-      div.appendChild(exp);
-
-      const shop = document.createElement('input');
-      shop.type = 'checkbox';
-      shop.checked = item.shopping;
-      shop.onchange = () => {
-        item.shopping = shop.checked;
-        save();
-        renderShopping();
-      };
-      div.appendChild(shop);
-
-      locDiv.appendChild(div);
-    });
-    container.appendChild(locDiv);
-  });
-}
-
-function renderShopping() {
-  const ul = document.getElementById('shopping-list');
-  ul.innerHTML = '';
-  items.filter(i => i.shopping).forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item.name;
-    ul.appendChild(li);
-  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
 function render() {
-  renderInventory();
-  renderShopping();
+  const container = document.getElementById('items');
+  if (!container) return;
+  container.innerHTML = '';
+  const location = document.body.dataset.location;
+  items.filter(i => i.location === location).forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    const img = document.createElement('img');
+    img.src = item.icon;
+    img.alt = item.name;
+    div.appendChild(img);
+    const name = document.createElement('span');
+    name.textContent = `${item.name} - ${item.quantity} ${item.unit || ''}`;
+    div.appendChild(name);
+    container.appendChild(div);
+  });
 }
 
-document.getElementById('add-form').addEventListener('submit', e => {
+function openModal() {
+  selectedFood = null;
+  document.getElementById('add-form').classList.add('hidden');
+  const grid = document.getElementById('icon-grid');
+  grid.innerHTML = '';
+  PREDEFINED_FOODS.forEach(food => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'icon-btn';
+    btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
+    btn.onclick = () => selectFood(food);
+    grid.appendChild(btn);
+  });
+  document.getElementById('add-modal').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('add-modal').classList.add('hidden');
+}
+
+function selectFood(food) {
+  selectedFood = food;
+  document.getElementById('selected-icon').src = food.icon;
+  document.getElementById('selected-name').textContent = food.name;
+  document.getElementById('add-form').classList.remove('hidden');
+}
+
+document.getElementById('add-btn')?.addEventListener('click', openModal);
+document.getElementById('close-modal')?.addEventListener('click', closeModal);
+
+document.getElementById('add-form')?.addEventListener('submit', e => {
   e.preventDefault();
-  const name = document.getElementById('food-name').value.trim();
-  const quantity = parseInt(document.getElementById('food-quantity').value, 10) || 1;
-  const location = document.getElementById('food-location').value;
-  const group = document.getElementById('food-group').value.trim();
-  const expiration = document.getElementById('food-expiration').value;
-  const item = { id: Date.now(), name, quantity, location, group, expiration, shopping: false };
+  if (!selectedFood) return;
+  const quantity = parseInt(document.getElementById('food-qty').value, 10) || 1;
+  const unit = document.getElementById('food-unit').value;
+  const expiration = document.getElementById('food-exp').value;
+  const location = document.body.dataset.location;
+  const item = { id: Date.now(), name: selectedFood.name, icon: selectedFood.icon, quantity, unit, expiration, location };
   items.push(item);
-  if (group && !groups.includes(group)) {
-    groups.push(group);
-    save();
-    loadGroups();
-  } else {
-    save();
-  }
-  e.target.reset();
+  save();
+  closeModal();
   render();
 });
 
-loadFoodsList();
-loadGroups();
 render();

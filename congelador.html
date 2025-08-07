@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Congelador - Wonder Fridge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-location="Congelador">
+  <nav class="top-menu">
+    <a href="nevera.html">Nevera</a>
+    <a href="congelador.html">Congelador</a>
+    <a href="despensa.html">Despensa</a>
+  </nav>
+  <main>
+    <h1>Congelador</h1>
+    <div id="items"></div>
+    <button id="add-btn" class="add-button">+</button>
+  </main>
+
+  <div id="add-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Selecciona un alimento</h2>
+      <div id="icon-grid"></div>
+      <form id="add-form" class="hidden">
+        <div class="selected">
+          <img id="selected-icon" alt="">
+          <span id="selected-name"></span>
+        </div>
+        <input type="number" id="food-qty" min="1" value="1">
+        <input type="text" id="food-unit" placeholder="Unidad (ej. unidades, kg, bolsas)">
+        <input type="date" id="food-exp">
+        <button type="submit">Agregar</button>
+      </form>
+      <button id="close-modal" type="button">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
