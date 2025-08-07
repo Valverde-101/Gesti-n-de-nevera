@@ -5,6 +5,7 @@ let editingItemId = null;
 let iconCatalog = {};
 let pendingDeleteId = null;
 let itemSearchTerm = '';
+let modalSearchTerm = '';
 let selectedCategory = null;
 
 function save() {
@@ -16,9 +17,22 @@ function render() {
   if (!container) return;
   container.innerHTML = '';
   const location = document.body.dataset.location;
-  items
-    .filter(i => i.location === location && i.name.toLowerCase().includes(itemSearchTerm))
-    .forEach(item => {
+  const filtered = items.filter(
+    i => i.location === location && i.name.toLowerCase().includes(itemSearchTerm)
+  );
+  const groups = {};
+  filtered.forEach(item => {
+    if (!groups[item.category]) groups[item.category] = [];
+    groups[item.category].push(item);
+  });
+  Object.keys(groups).forEach(cat => {
+    const section = document.createElement('div');
+    section.className = 'category-group';
+    const header = document.createElement('h2');
+    const icon = getCategoryIcon(cat);
+    header.innerHTML = icon ? `<img src="${icon}" alt="${cat}"> ${cat}` : cat;
+    section.appendChild(header);
+    groups[cat].forEach(item => {
       const div = document.createElement('div');
       div.className = 'item';
       const img = document.createElement('img');
@@ -26,7 +40,7 @@ function render() {
       img.alt = item.name;
       div.appendChild(img);
       const name = document.createElement('span');
-      name.textContent = `${item.name} (${item.category}) - ${item.quantity} ${item.unit || ''}`;
+      name.textContent = `${item.name} - ${item.quantity} ${item.unit || ''}`;
       div.appendChild(name);
       const actions = document.createElement('div');
       actions.className = 'item-actions';
@@ -39,8 +53,16 @@ function render() {
       delBtn.onclick = () => deleteItem(item.id);
       actions.appendChild(delBtn);
       div.appendChild(actions);
-      container.appendChild(div);
+      section.appendChild(div);
     });
+    container.appendChild(section);
+  });
+}
+
+function getCategoryIcon(cat) {
+  if (cat === 'Frutas') return 'icons/Frutas/fruta_icon.png';
+  if (cat === 'Verduras') return 'icons/Verduras/vegetal_icon.png';
+  return iconCatalog[cat]?.[0]?.icon || '';
 }
 
 function openModal() {
@@ -54,6 +76,9 @@ function openModal() {
 function showSelectStep() {
   document.getElementById('selection-step').classList.remove('hidden');
   document.getElementById('add-form').classList.add('hidden');
+  modalSearchTerm = '';
+  const search = document.getElementById('modal-item-search');
+  if (search) search.value = '';
   renderCategories();
   renderItems(selectedCategory);
 }
@@ -67,10 +92,7 @@ function renderCategories() {
     btn.type = 'button';
     btn.className = 'category-btn';
     if (selectedCategory === cat) btn.classList.add('active');
-    let icon = '';
-    if (cat === 'Frutas') icon = 'icons/Frutas/fruta_icon.png';
-    else if (cat === 'Verduras') icon = 'icons/Verduras/vegetal_icon.png';
-    else icon = iconCatalog[cat][0]?.icon || '';
+    const icon = getCategoryIcon(cat);
     btn.innerHTML = `<img src="${icon}" alt="${cat}"><span>${cat}</span>`;
     btn.onclick = () => { selectedCategory = cat; renderCategories(); renderItems(cat); };
     container.appendChild(btn);
@@ -82,14 +104,16 @@ function renderItems(cat) {
   if (!container) return;
   container.innerHTML = '';
   if (!cat) return;
-  (iconCatalog[cat] || []).forEach(food => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'item-btn';
-    btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
-    btn.onclick = () => selectFood({ ...food, category: cat });
-    container.appendChild(btn);
-  });
+  (iconCatalog[cat] || [])
+    .filter(food => food.name.toLowerCase().includes(modalSearchTerm))
+    .forEach(food => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'item-btn';
+      btn.innerHTML = `<img src="${food.icon}" alt="${food.name}"><span>${food.name}</span>`;
+      btn.onclick = () => selectFood({ ...food, category: cat });
+      container.appendChild(btn);
+    });
 }
 
 function closeModal() {
@@ -167,6 +191,10 @@ document.getElementById('item-search')?.addEventListener('input', e => {
   itemSearchTerm = e.target.value.toLowerCase();
   render();
 });
+document.getElementById('modal-item-search')?.addEventListener('input', e => {
+  modalSearchTerm = e.target.value.toLowerCase();
+  renderItems(selectedCategory);
+});
 
 document.getElementById('add-form')?.addEventListener('submit', e => {
   e.preventDefault();
@@ -188,7 +216,18 @@ document.getElementById('add-form')?.addEventListener('submit', e => {
       item.registered = registered;
     }
   } else {
-    const item = { id: Date.now(), name: selectedFood.name, icon: selectedFood.icon, category: selectedFood.category, quantity, unit, expiration, location, note, registered };
+    const item = {
+      id: Date.now(),
+      name: selectedFood.name,
+      icon: selectedFood.icon,
+      category: selectedFood.category,
+      quantity,
+      unit,
+      expiration,
+      location,
+      note,
+      registered
+    };
     items.push(item);
   }
   save();
