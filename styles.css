@@ -1,29 +1,131 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 1rem;
+  font-family: sans-serif;
+  margin: 0;
 }
-section {
-  margin-bottom: 2rem;
+
+/* Splash screen */
+body.splash {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  color: white;
+  background: radial-gradient(circle, #add8e6, #d8b0ff);
 }
+.fridge-icon {
+  width: 80px;
+  height: 120px;
+  background: white;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.fridge-icon::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #ccc;
+}
+
+/* Top menu */
+.top-menu {
+  background: #5E44E0;
+  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
+}
+.top-menu a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  padding: 1rem;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #3B7CF0;
+  color: white;
+  font-size: 24px;
+}
+
+/* Item list */
 .item {
-  border-bottom: 1px solid #ccc;
-  padding: 0.5rem 0;
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
-.item span.name {
-  flex: 1;
+.item img {
+  width: 40px;
+  height: 40px;
 }
-.item span.expiration {
-  font-size: 0.9rem;
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.expired {
-  color: red;
+.modal.hidden {
+  display: none;
 }
-.soon {
-  color: orange;
+.modal-content {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 90%;
 }
-.location {
-  margin-top: 1rem;
+#icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.icon-btn {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.icon-btn img {
+  width: 40px;
+  height: 40px;
+}
+.selected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.hidden {
+  display: none;
 }
