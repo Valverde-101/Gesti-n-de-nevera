@@ -125,7 +125,11 @@ function toggleSelect(id) {
   } else {
     selectedIds.add(id);
   }
-  updateMultiActions();
+  if (selectedIds.size === 0) {
+    exitMultiSelect();
+  } else {
+    updateMultiActions();
+  }
   render();
 }
 
