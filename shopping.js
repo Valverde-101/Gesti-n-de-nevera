@@ -5,6 +5,9 @@ let selectedFood = null;
 let selectedCategory = null;
 let modalSearchTerm = '';
 let itemSearchTerm = '';
+let shoppingSelectMode = false;
+let selectedShopping = new Set();
+let shoppingPress = null;
 
 const CATEGORY_ICONS = {
   Frutas: 'icons/Categorias/Frutas.png',
@@ -42,7 +45,17 @@ function renderShopping() {
       const div = document.createElement('div');
       div.className = 'item';
       if (item.purchased) div.classList.add('purchased');
-      div.onclick = () => togglePurchased(item.id);
+      if (selectedShopping.has(item.id)) div.classList.add('selected');
+      div.addEventListener('mousedown', () => startShoppingPress(item.id));
+      div.addEventListener('mouseup', cancelShoppingPress);
+      div.addEventListener('mouseleave', cancelShoppingPress);
+      div.addEventListener('click', () => {
+        if (shoppingSelectMode) {
+          toggleShoppingSelect(item.id);
+        } else {
+          togglePurchased(item.id);
+        }
+      });
       const img = document.createElement('img');
       img.src = item.icon;
       img.alt = item.name;
@@ -67,6 +80,38 @@ function togglePurchased(id) {
 
 function getCategoryIcon(cat) {
   return CATEGORY_ICONS[cat] || iconCatalog[cat]?.[0]?.icon || '';
+}
+
+function startShoppingPress(id) {
+  if (shoppingSelectMode) return;
+  shoppingPress = setTimeout(() => {
+    shoppingSelectMode = true;
+    selectedShopping.add(id);
+    updateShoppingActions();
+    renderShopping();
+  }, 500);
+}
+
+function cancelShoppingPress() {
+  clearTimeout(shoppingPress);
+}
+
+function toggleShoppingSelect(id) {
+  if (selectedShopping.has(id)) selectedShopping.delete(id);
+  else selectedShopping.add(id);
+  updateShoppingActions();
+  renderShopping();
+}
+
+function exitShoppingSelect() {
+  shoppingSelectMode = false;
+  selectedShopping.clear();
+  updateShoppingActions();
+}
+
+function updateShoppingActions() {
+  const bar = document.getElementById('shopping-actions');
+  if (bar) bar.classList.toggle('hidden', selectedShopping.size === 0);
 }
 
 function openModal() {
@@ -202,6 +247,42 @@ document.getElementById('quick-confirm')?.addEventListener('click', () => {
   saveShopping();
   renderShopping();
   document.getElementById('quick-modal').classList.add('hidden');
+});
+
+document.getElementById('shopping-delete')?.addEventListener('click', () => {
+  const list = document.getElementById('shopping-confirm-list');
+  if (list) {
+    list.innerHTML = '';
+    shoppingList.filter(i => selectedShopping.has(i.id)).forEach(i => {
+      const div = document.createElement('div');
+      div.className = 'selected';
+      div.innerHTML = `<img src="${i.icon}" alt=""><span>${i.name} - ${i.quantity}</span>`;
+      list.appendChild(div);
+    });
+  }
+  document.getElementById('shopping-confirm-modal')?.classList.remove('hidden');
+});
+
+document.getElementById('shopping-confirm-delete')?.addEventListener('click', () => {
+  shoppingList = shoppingList.filter(i => !selectedShopping.has(i.id));
+  saveShopping();
+  exitShoppingSelect();
+  renderShopping();
+  document.getElementById('shopping-confirm-modal').classList.add('hidden');
+});
+
+document.getElementById('shopping-confirm-cancel')?.addEventListener('click', () => {
+  document.getElementById('shopping-confirm-modal').classList.add('hidden');
+});
+
+document.getElementById('shopping-select-all')?.addEventListener('click', () => {
+  if (selectedShopping.size === shoppingList.length) {
+    selectedShopping.clear();
+  } else {
+    shoppingList.forEach(i => selectedShopping.add(i.id));
+  }
+  updateShoppingActions();
+  renderShopping();
 });
 
 fetch('icons.json')
