@@ -8,6 +8,15 @@ let itemSearchTerm = '';
 let modalSearchTerm = '';
 let selectedCategory = null;
 
+const CATEGORY_ICONS = {
+  Frutas: 'icons/Categorias/Frutas.png',
+  Vegetales: 'icons/Categorias/Vegetales.png',
+  Verduras: 'icons/Categorias/Vegetales.png',
+  Carnes: 'icons/Categorias/Carnes.png',
+  Cereales: 'icons/Categorias/Cereales.png',
+  Peces: 'icons/Categorias/Peces.png'
+};
+
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
@@ -60,9 +69,7 @@ function render() {
 }
 
 function getCategoryIcon(cat) {
-  if (cat === 'Frutas') return 'icons/Frutas/fruta_icon.png';
-  if (cat === 'Verduras') return 'icons/Verduras/vegetal_icon.png';
-  return iconCatalog[cat]?.[0]?.icon || '';
+  return CATEGORY_ICONS[cat] || iconCatalog[cat]?.[0]?.icon || '';
 }
 
 function openModal() {
