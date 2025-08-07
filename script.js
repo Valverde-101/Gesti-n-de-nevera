@@ -9,6 +9,11 @@ let modalSearchTerm = '';
 let selectedCategory = null;
 const SHOPPING_KEY = 'shopping-list';
 let shoppingList = JSON.parse(localStorage.getItem(SHOPPING_KEY) || '[]');
+let multiSelectMode = false;
+let selectedIds = new Set();
+let pressTimer = null;
+let sortOption = 'name';
+let viewType = 'list';
 
 const CATEGORY_ICONS = {
   Frutas: 'icons/Categorias/Frutas.png',
@@ -33,6 +38,7 @@ function render() {
   const container = document.getElementById('items');
   if (!container) return;
   container.innerHTML = '';
+  container.classList.toggle('grid-view', viewType === 'grid');
   const location = document.body.dataset.location;
   const filtered = items.filter(
     i => i.location === location && i.name.toLowerCase().includes(itemSearchTerm)
@@ -43,6 +49,20 @@ function render() {
     groups[item.category].push(item);
   });
   Object.keys(groups).forEach(cat => {
+    groups[cat].sort((a, b) => {
+      switch (sortOption) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'expiration':
+          return (a.expiration || '').localeCompare(b.expiration || '');
+        case 'quantity':
+          return a.quantity - b.quantity;
+        case 'registered':
+          return (a.registered || '').localeCompare(b.registered || '');
+        default:
+          return 0;
+      }
+    });
     const section = document.createElement('div');
     section.className = 'category-group';
     const header = document.createElement('h2');
@@ -55,7 +75,19 @@ function render() {
       if (item.quantity <= 0) {
         div.classList.add('depleted');
       }
-      div.onclick = () => editItem(item.id);
+      if (selectedIds.has(item.id)) {
+        div.classList.add('selected');
+      }
+      div.addEventListener('mousedown', () => startPress(item.id));
+      div.addEventListener('mouseup', cancelPress);
+      div.addEventListener('mouseleave', cancelPress);
+      div.addEventListener('click', () => {
+        if (multiSelectMode) {
+          toggleSelect(item.id);
+        } else {
+          editItem(item.id);
+        }
+      });
       const img = document.createElement('img');
       img.src = item.icon;
       img.alt = item.name;
@@ -71,6 +103,41 @@ function render() {
 
 function getCategoryIcon(cat) {
   return CATEGORY_ICONS[cat] || iconCatalog[cat]?.[0]?.icon || '';
+}
+
+function startPress(id) {
+  if (multiSelectMode) return;
+  pressTimer = setTimeout(() => {
+    multiSelectMode = true;
+    selectedIds.add(id);
+    updateMultiActions();
+    render();
+  }, 500);
+}
+
+function cancelPress() {
+  clearTimeout(pressTimer);
+}
+
+function toggleSelect(id) {
+  if (selectedIds.has(id)) {
+    selectedIds.delete(id);
+  } else {
+    selectedIds.add(id);
+  }
+  updateMultiActions();
+  render();
+}
+
+function exitMultiSelect() {
+  multiSelectMode = false;
+  selectedIds.clear();
+  updateMultiActions();
+}
+
+function updateMultiActions() {
+  const bar = document.getElementById('multi-actions');
+  if (bar) bar.classList.toggle('hidden', selectedIds.size === 0);
 }
 
 function openModal() {
@@ -239,6 +306,109 @@ document.getElementById('item-search')?.addEventListener('input', e => {
 document.getElementById('modal-item-search')?.addEventListener('input', e => {
   modalSearchTerm = e.target.value.toLowerCase();
   renderItems(selectedCategory);
+});
+
+document.getElementById('move-selected')?.addEventListener('click', () => {
+  document.getElementById('move-modal')?.classList.remove('hidden');
+});
+
+document.getElementById('move-confirm')?.addEventListener('click', () => {
+  const loc = document.getElementById('move-select').value;
+  selectedIds.forEach(id => {
+    const item = items.find(i => i.id === id);
+    if (item) item.location = loc;
+  });
+  save();
+  exitMultiSelect();
+  render();
+  document.getElementById('move-modal').classList.add('hidden');
+});
+
+document.getElementById('move-cancel')?.addEventListener('click', () => {
+  document.getElementById('move-modal').classList.add('hidden');
+});
+
+document.getElementById('copy-selected')?.addEventListener('click', () => {
+  document.getElementById('copy-modal')?.classList.remove('hidden');
+});
+
+document.getElementById('copy-confirm')?.addEventListener('click', () => {
+  const loc = document.getElementById('copy-select').value;
+  selectedIds.forEach(id => {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      if (loc === 'Compras') {
+        shoppingList.push({
+          id: Date.now() + Math.random(),
+          name: item.name,
+          icon: item.icon,
+          category: item.category,
+          quantity: item.quantity,
+          unit: item.unit,
+          purchased: false
+        });
+      } else {
+        items.push({ ...item, id: Date.now() + Math.random(), location: loc });
+      }
+    }
+  });
+  save();
+  saveShopping();
+  exitMultiSelect();
+  render();
+  document.getElementById('copy-modal').classList.add('hidden');
+});
+
+document.getElementById('copy-cancel')?.addEventListener('click', () => {
+  document.getElementById('copy-modal').classList.add('hidden');
+});
+
+document.getElementById('delete-selected')?.addEventListener('click', () => {
+  const list = document.getElementById('multi-confirm-list');
+  if (list) {
+    list.innerHTML = '';
+    items.filter(i => selectedIds.has(i.id)).forEach(i => {
+      const div = document.createElement('div');
+      div.className = 'selected';
+      div.innerHTML = `<img src="${i.icon}" alt=""><span>${i.name} - ${i.quantity}</span>`;
+      list.appendChild(div);
+    });
+  }
+  document.getElementById('multi-confirm-modal')?.classList.remove('hidden');
+});
+
+document.getElementById('multi-confirm-delete')?.addEventListener('click', () => {
+  items = items.filter(i => !selectedIds.has(i.id));
+  save();
+  exitMultiSelect();
+  render();
+  document.getElementById('multi-confirm-modal').classList.add('hidden');
+});
+
+document.getElementById('multi-confirm-cancel')?.addEventListener('click', () => {
+  document.getElementById('multi-confirm-modal').classList.add('hidden');
+});
+
+document.getElementById('options-btn')?.addEventListener('click', () => {
+  const sortSel = document.getElementById('sort-select');
+  const viewSel = document.getElementById('view-select');
+  if (sortSel) sortSel.value = sortOption;
+  if (viewSel) viewSel.value = viewType;
+  document.getElementById('options-modal')?.classList.remove('hidden');
+});
+
+document.getElementById('options-close')?.addEventListener('click', () => {
+  document.getElementById('options-modal').classList.add('hidden');
+});
+
+document.getElementById('sort-select')?.addEventListener('change', e => {
+  sortOption = e.target.value;
+  render();
+});
+
+document.getElementById('view-select')?.addEventListener('change', e => {
+  viewType = e.target.value;
+  render();
 });
 
 document.getElementById('add-form')?.addEventListener('submit', e => {

@@ -68,5 +68,22 @@
   </div>
 
   <script src="shopping.js"></script>
+
+  <div id="shopping-actions" class="multi-actions hidden">
+    <button id="shopping-select-all" type="button">Seleccionar todo</button>
+    <button id="shopping-delete" type="button">Eliminar</button>
+  </div>
+
+  <div id="shopping-confirm-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Eliminar elementos</h2>
+      <div id="shopping-confirm-list"></div>
+      <p>¿Estás seguro de eliminar estos elementos?</p>
+      <div class="modal-actions">
+        <button id="shopping-confirm-delete" type="button">Eliminar</button>
+        <button id="shopping-confirm-cancel" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

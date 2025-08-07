@@ -16,6 +16,7 @@
   <main>
     <h1>Nevera</h1>
     <input type="text" id="item-search" class="search-bar" placeholder="Buscar...">
+    <button id="options-btn" class="options-button">⚙</button>
     <div id="items"></div>
     <button id="add-btn" class="add-button">+</button>
   </main>
@@ -90,5 +91,77 @@
   </div>
 
   <script src="script.js"></script>
+
+  <div id="multi-actions" class="multi-actions hidden">
+    <button id="move-selected" type="button">Mover</button>
+    <button id="copy-selected" type="button">Copiar</button>
+    <button id="delete-selected" type="button">Eliminar</button>
+  </div>
+
+  <div id="move-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Mover a</h2>
+      <select id="move-select">
+        <option value="Nevera">Nevera</option>
+        <option value="Congelador">Congelador</option>
+        <option value="Despensa">Despensa</option>
+      </select>
+      <div class="modal-actions">
+        <button id="move-confirm" type="button">Mover</button>
+        <button id="move-cancel" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="copy-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Copiar a</h2>
+      <select id="copy-select">
+        <option value="Nevera">Nevera</option>
+        <option value="Congelador">Congelador</option>
+        <option value="Despensa">Despensa</option>
+        <option value="Compras">Lista de compras</option>
+      </select>
+      <div class="modal-actions">
+        <button id="copy-confirm" type="button">Copiar</button>
+        <button id="copy-cancel" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="multi-confirm-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Eliminar elementos</h2>
+      <div id="multi-confirm-list"></div>
+      <p>¿Estás seguro de eliminar estos elementos?</p>
+      <div class="modal-actions">
+        <button id="multi-confirm-delete" type="button">Eliminar</button>
+        <button id="multi-confirm-cancel" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="options-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Opciones</h2>
+      <label>Ordenar por
+        <select id="sort-select">
+          <option value="name">Nombre</option>
+          <option value="expiration">Fecha de caducidad</option>
+          <option value="quantity">Cantidad</option>
+          <option value="registered">Fecha de registro</option>
+        </select>
+      </label>
+      <label>Tipo de vista
+        <select id="view-select">
+          <option value="list">Lista</option>
+          <option value="grid">Cuadrícula</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button id="options-close" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
